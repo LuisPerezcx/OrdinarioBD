@@ -143,6 +143,14 @@ CREATE TABLE Materia (
     FOREIGN KEY (idGrupo) REFERENCES Grupo(idGrupo)
 );
 
+-- Crear tabla inscripciones
+CREATE TABLE inscripcion(
+    idInscripcion INT auto_increment PRIMARY KEY NOT NULL,
+    fecha DATE,
+    idAlumno INT NOT NULL,
+    FOREIGN KEY (idAlumno) REFERENCES Alumno(idAlumno)
+);
+
 
 -- Crear la tabla Reinscripcion
 CREATE TABLE Reinscripcion (
@@ -177,7 +185,32 @@ CREATE TABLE Calificaciones(
 );
 
 
---trigger 
+-- triggers
+
+DELIMITER //
+CREATE TRIGGER agregarInscripcion
+AFTER insert ON alumno
+FOR EACH ROW
+BEGIN
+    DECLARE semestreNuevo varchar(20);
+    
+	-- Obtener el nuevo semestre del alumno
+    SELECT nombreSemestre INTO semestreNuevo
+    FROM Alumno
+    JOIN Grupo ON alumno.idGrupo = Grupo.idGrupo
+    JOIN semestre ON grupo.idSemestre = semestre.idSemestre
+    WHERE grupo.idGrupo = NEW.idGrupo;
+    
+    
+	-- Insertar en reinscripciones si cambia de semestre 1 a semestre 2
+    IF semestreNuevo = 'Primero' THEN
+        INSERT INTO inscripcion (idInscripcion, fecha, idAlumno) VALUES (0,CURDATE(),NEW.idAlumno);
+    END IF;
+    
+END;
+//
+
+
 /*
 
 DELIMITER //
