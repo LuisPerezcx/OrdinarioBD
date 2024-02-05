@@ -53,10 +53,10 @@ CREATE TABLE Tutor (
 );
 
 -- Crear la tabla Inscripcion
-CREATE TABLE Inscripcion (
-    idInscripcion INT(2) PRIMARY KEY NOT NULL,
-    fecha DATE NOT NULL,
-    escuelaProcedencia VARCHAR(45) NOT NULL
+CREATE TABLE EscuelaProcedencia (
+    idEscuelaProcedencia INT(2) PRIMARY KEY NOT NULL,
+    escuelaProcedencia VARCHAR(45) NOT NULL,
+    direccionEscuela varchar(60) not null
 );
 
 
@@ -107,10 +107,10 @@ CREATE TABLE Alumno (
     enfermedadCronica BOOLEAN NOT NULL,
     idGrupo INT(2) NOT NULL,
     idDireccion INT(2) NOT NULL,
-    idInscripcion INT(2) NOT NULL,
+    idEscuelaProcedencia INT(2) NOT NULL,
     FOREIGN KEY (idGrupo) REFERENCES Grupo(idGrupo),
     FOREIGN KEY (idDireccion) REFERENCES Direccion(idDireccion),
-    FOREIGN KEY (idInscripcion) REFERENCES Inscripcion(idInscripcion),
+    FOREIGN KEY (idEscuelaProcedencia) REFERENCES EscuelaProcedencia(idEscuelaProcedencia),
     FOREIGN KEY (idGenero) REFERENCES Genero(idGenero)
 );
 
@@ -290,11 +290,11 @@ INSERT INTO Tutor (idTutor, nombreTutor, numeroTutor, direccionTutor) VALUES
 (26, 'Elena Aguilar', 5556667776, 'Paseo Principal #951');
 
 
-INSERT INTO Inscripcion (idInscripcion, fecha, escuelaProcedencia) VALUES
-(1, '2023-09-15', 'Escuela Secundaria Independencia'),
-(2, '2023-10-02', 'Colegio Juana de Arco'),
-(3, '2023-08-20', 'Instituto Benito Juárez'),
-(4, '2023-07-05', 'Preparatoria Miguel Hidalgo');
+INSERT INTO EscuelaProcedencia (idEscuelaProcedencia, escuelaProcedencia, direccionEscuela) VALUES
+(1, 'Escuela Secundaria Independencia', 'Direccion #1'),
+(2, 'Colegio Juana de Arco', 'Direccion #2'),
+(3, 'Instituto Benito Juárez', 'Direccion #3'),
+(4, 'Preparatoria Miguel Hidalgo', 'Direccion #4');
 
 
 INSERT INTO Direccion (idDireccion, idCodigoPostal, calle, colonia, municipio) VALUES
@@ -388,7 +388,7 @@ INSERT INTO Genero (idGenero, nombreGenero) VALUES
 
 
 
-INSERT INTO Alumno (idAlumno, nombreCompleto, idGenero, edad, fechaNacimiento, CURP, telefono, correo, enfermedadCronica, idGrupo, idDireccion, idInscripcion)
+INSERT INTO Alumno (idAlumno, nombreCompleto, idGenero, edad, fechaNacimiento, CURP, telefono, correo, enfermedadCronica, idGrupo, idDireccion, idEscuelaProcedencia)
 VALUES
 (1, 'Juan Pérez', 1, 20, '2003-04-10', 'PERJ930410HMCLNR02', 5551234567, 'juanperez@example.com', 0, 5, 3, 1),
 (2, 'María García', 2, 22, '2001-07-15', 'GARM010715MCLNR06', 5559876543, 'mariagarcia@example.com', 1, 12, 6, 2),
@@ -1076,6 +1076,7 @@ VALUES
     (124, 7.0, 25, 59),
     (125, 9.5, 25, 60);
 
+-- trigger
 
 
 
