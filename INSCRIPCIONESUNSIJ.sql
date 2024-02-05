@@ -177,10 +177,33 @@ CREATE TABLE Calificaciones(
 );
 
 
+--trigger 
+/*
+
+DELIMITER //
+
+CREATE TRIGGER agregaReinscripcion
+AFTER UPDATE ON alumno
+FOR EACH ROW
+BEGIN
+    IF NEW.semestre = 2 AND OLD.semestre = 1 THEN
+        INSERT INTO reinscripciones (idAlumno, semestre) VALUES (NEW.idAlumno, 2);
+    END IF;
+END;
+//
+
+CREATE TRIGGER eliminaInscripcion
+AFTER UPDATE ON alumno
+FOR EACH ROW
+BEGIN
+    IF NEW.semestre = 2 AND OLD.semestre = 1 THEN
+        DELETE FROM inscripciones WHERE idAlumno = NEW.idAlumno;
+    END IF;
+END;
+//
+*/
+
 -- INSERCIONES
-
-
-
 INSERT INTO Carrera (idCarrera, nombreCarrera) VALUES
 (1, 'Ingeniería Forestal'),
 (2, 'Licenciatura en Ciencias Ambientales'),
@@ -1075,10 +1098,3 @@ VALUES
     (123, 8.2, 25, 58),
     (124, 7.0, 25, 59),
     (125, 9.5, 25, 60);
-
--- trigger
-
-
-
-
-
